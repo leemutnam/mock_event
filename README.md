@@ -8,7 +8,36 @@
 > editor / debug tool: pycharm
 
 > pycharm plugin: Nodejs, Node.js Remote Interpreter, Vue.js
-
+## Set-Up
+1. 패키지 설치
+```
+npm install
+```
+1. config 추가
+```
+touch _provisioning/configuration/root/etc/config.json
+```
+2. id_rsa 추가
+```
+cd _provisioning/configuration/root/.ssh
+sudo cp ~/.ssh/id_rsa .
+```
+3. 파일 수정
+```
+config.json -> vagrant.name = {project name}
+config.json -> git.repo = {remote repository}
+common.yml -> project_path = opt/{project name}
+```
+4. 
+```
+vagrant up
+```
+5.
+```
+vagrant ssh
+cd /opt/{project name}
+npm run start
+```
 ## Build Setup
 
 ``` bash
