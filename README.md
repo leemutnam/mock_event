@@ -8,6 +8,7 @@
 > editor / debug tool: pycharm
 
 > pycharm plugin: Nodejs, Node.js Remote Interpreter, Vue.js
+
 ## Set-Up
 1. 패키지 설치
 ```
@@ -32,15 +33,22 @@ common.yml -> project_path = opt/{project name}
 ```
 vagrant up
 ```
-5.
+5. pycharm SFTP 연동
+```
+Tools - deployment - configuration - connection/mapping
+Tools - deployment - check Automatic Upload
+```
+6.
 ```
 vagrant ssh
 cd /opt/{project name}
+npm install
 npm run start
 ```
+
 ## Build Setup
 
-``` bash
+```
 # install dependencies
 npm install
 
