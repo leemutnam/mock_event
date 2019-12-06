@@ -1,23 +1,30 @@
 <template>
   <div id="app">
-    <img src="./assets/logo.png">
     <router-view/>
   </div>
 </template>
 
 <script>
+import HelloWorld from './components/HelloWorld'
+import Temp from './components/Temp'
+import Temp2 from './components/Temp2'
+
 export default {
-  name: 'App'
+  name: 'App',
+
+  components: {
+    HelloWorld,
+    Temp,
+    Temp2
+  },
+
+  data: () => ({
+    //
+  })
 }
 </script>
-
 <style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+  #id{
+    height: 100%;
+  }
 </style>
