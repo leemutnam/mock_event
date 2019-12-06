@@ -1,0 +1,21 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+require 'json'
+
+file = File.read(File.join(File.dirname(__FILE__), 'configuration/root/etc/config.json'))
+env = JSON.parse(file)["vagrant"]
+
+Vagrant.configure(2) do |config|
+  config.vm.box = env["box"]
+  config.vm.provider "virtualbox" do |v|
+    v.name = env["name"]
+    v.cpus = env["cpu"]
+    v.memory = env["memory"]
+  end
+
+  config.vm.provision "shell", inline: "yum -y install epel-release"
+  config.vm.provision "shell", inline: "yum -y install ansible"
+  config.vm.provision "shell", inline: "ansible-playbook /vagrant/ansible/playbook.yml"
+  config.vm.network "forwarded_port", guest: 8080, host: 8080
+  config.vm.network "private_network", ip: env["ip"]
+end

@@ -1,0 +1,16 @@
+{
+  "vagrant": {
+    "box": "...",
+    "name": "...",
+    "cpu": "...",
+    "memory": "...",
+    "ip": "..."
+  },
+  "git": {
+    "repo": "..."
+  },
+  "root_user": {
+    "name": "...",
+    "password": "..."
+  }
+}

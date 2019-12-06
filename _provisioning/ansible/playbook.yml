@@ -1,0 +1,69 @@
+---
+- name: setup for the Ansible's Environment
+  vars_files:
+    - /vagrant/ansible/group_vars/common.yml
+  hosts: localhost
+  become: yes
+  become_user: root
+  become_method: sudo
+  gather_facts: no
+
+  tasks:
+    - name: Load Config File
+      include_vars:
+        file: /vagrant/configuration/root/etc/config.json
+        name: config
+
+    - name: Change root user passwd
+      user:
+        name: "{{config.root_user.name}}"
+        password: "{{config.root_user.password | password_hash('sha512')}}"
+
+    - name: Edit sshd-config
+      lineinfile: dest='/etc/ssh/sshd_config' regexp='^#?PermitRootLogin' line='PermitRootLogin yes'
+    - lineinfile: dest='/etc/ssh/sshd_config' regexp='^#?PasswordAuthentication' line='PasswordAuthentication yes'
+
+    - name: Reload ssh service
+      service: name=sshd state=reloaded
+
+    - name: Set-up ssh keygen
+      shell: |
+        mkdir /root/.ssh
+        cp /vagrant/configuration/root/.ssh/id_rsa /root/.ssh/id_rsa
+      args:
+        warn: false
+
+    - name: Install Required Packages
+      yum:
+        name: gcc, gcc-c++, make, net-tools, git
+
+    - name: Install NodeJs
+      shell: |
+        curl -sL https://rpm.nodesource.com/setup_10.x | bash -
+        yum install nodejs -y
+      args:
+        warn: false
+
+    - name: Change permission
+      shell: chmod 600 /root/.ssh/id_rsa
+      args:
+        warn: false
+
+    - name: Clone a repository
+      git:
+        repo: "{{config.git.repo}}"
+        version: master
+        force: yes
+        clone: yes
+        dest: "{{project_path}}"
+        depth: 1
+        accept_hostkey: yes
+        key_file: /root/.ssh/id_rsa
+
+    - name: Install NodeJs Packages
+      shell: |
+        cd "{{project_path}}"
+        sudo npm install phantomjs-prebuilt
+        npm install
+      args:
+        warn: false
