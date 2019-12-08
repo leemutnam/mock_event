@@ -64,6 +64,6 @@
       shell: |
         cd "{{project_path}}"
         sudo npm install phantomjs-prebuilt
-        npm install
+        sudo npm install
       args:
         warn: false
